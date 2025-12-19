@@ -1,0 +1,8 @@
+{
+  "name": "JARVIS Bike Builder",
+  "description": "Um assistente pessoal futurista para ajudar adolescentes a montar sua bike de grau do zero, com visão computacional e comandos de voz.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
