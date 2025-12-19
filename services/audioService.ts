@@ -6,7 +6,7 @@ export const playJarvisWelcome = async () => {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: 'Iniciando sistemas, Arthur. Protocolos de oficina ativos. Bem-vindo de volta, Senhor.' }] }],
+      contents: [{ parts: [{ text: 'Iniciando sistema. Protocolos de oficina ativos. Bem-vindo de volta, Arthur.' }] }],
       config: {
         responseModalities: [Modality.AUDIO],
         speechConfig: {
@@ -33,7 +33,6 @@ export const playJarvisWelcome = async () => {
   }
 };
 
-// Funções auxiliares para processamento de áudio PCM
 function decode(base64: string) {
   const binaryString = atob(base64);
   const len = binaryString.length;
@@ -68,12 +67,12 @@ export const playBootSfx = () => {
   const osc = ctx.createOscillator();
   const g = ctx.createGain();
   osc.type = 'sine';
-  osc.frequency.setValueAtTime(100, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(1000, ctx.currentTime + 0.5);
-  g.gain.setValueAtTime(0.2, ctx.currentTime);
-  g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+  osc.frequency.setValueAtTime(80, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.6);
+  g.gain.setValueAtTime(0.15, ctx.currentTime);
+  g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
   osc.connect(g);
   g.connect(ctx.destination);
   osc.start();
-  osc.stop(ctx.currentTime + 0.5);
+  osc.stop(ctx.currentTime + 0.6);
 };
