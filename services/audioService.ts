@@ -1,6 +1,16 @@
 
 import { GoogleGenAI, Modality } from "@google/genai";
 
+let sharedAudioCtx: AudioContext | null = null;
+
+const getSharedAudioContext = () => {
+  if (!sharedAudioCtx) {
+    const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
+    sharedAudioCtx = new AudioContextClass({ sampleRate: 24000 });
+  }
+  return sharedAudioCtx;
+};
+
 export const playJarvisWelcome = async () => {
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
@@ -19,7 +29,13 @@ export const playJarvisWelcome = async () => {
 
     const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
     if (base64Audio) {
-      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+      const audioCtx = getSharedAudioContext();
+      
+      // Essencial para Safari/Chrome mobile: retomar no evento de clique
+      if (audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+      }
+
       const arrayBuffer = decode(base64Audio);
       const audioBuffer = await decodeAudioData(arrayBuffer, audioCtx, 24000, 1);
       
@@ -63,16 +79,22 @@ async function decodeAudioData(
 }
 
 export const playBootSfx = () => {
-  const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-  const osc = ctx.createOscillator();
-  const g = ctx.createGain();
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(80, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.6);
-  g.gain.setValueAtTime(0.15, ctx.currentTime);
-  g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
-  osc.connect(g);
-  g.connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime + 0.6);
+  try {
+    const ctx = getSharedAudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(80, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.6);
+    g.gain.setValueAtTime(0.1, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.6);
+  } catch (e) {
+    console.warn("SFX falhou:", e);
+  }
 };

@@ -47,7 +47,7 @@ const ChatInterface: React.FC = () => {
   return (
     <div className="flex flex-col h-full glass-panel rounded-[2.5rem] overflow-hidden relative border-sky-500/20 shadow-2xl">
       <div className="scanline opacity-5"></div>
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[85%] p-5 rounded-3xl ${
