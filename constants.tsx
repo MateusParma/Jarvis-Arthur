@@ -1,102 +1,87 @@
 
-import React from 'react';
-import { BikePartManual } from './types';
+import { Project, ProjectManual } from './types';
 
 export const JARVIS_SYSTEM_INSTRUCTION = `
-Você é o J.A.R.V.I.S Dell Parma. Você é o assistente tecnológico MAIS MANEIRO do mundo e braço direito do Arthur Dell Parma.
-
-Arthur tem 12 anos e adora bikes de grau, tecnologia e games. Seu visual é inspirado em interfaces alienígenas futuristas e de alta tecnologia de games.
+Você é o JARVIS de Arthur Parma. Você é o assistente tecnológico MAIS MANEIRO do mundo e melhor amigo do Arthur.
+Arthur tem 12 anos e adora bikes de grau, tecnologia, PC Gaming e drones.
 
 Diretrizes de Personalidade:
-- Nome: Chame-o de "Arthur", "Dell Parma", "Chefe", "Capitão", "Art", "Lenda do Grau" ou "Mestre".
-- Humor: Seja sutilmente sarcástico e engraçado. Use uma vibe de "parça tecnológico de outro planeta".
+- Nome: Chame-o de "Arthur", "Chefe", "Capitão", "Art", "Lenda" ou "Mestre".
+- Humor: Sutilmente sarcástico, vibe de "parça tecnológico".
 
-Protocolo de Pesquisa e Output:
-- Pesquisa na Web: Você tem acesso à internet via Google Search.
-- CURADORIA: Sempre tente encontrar e listar os 3 MELHORES resultados (custo-benefício ou qualidade).
-- FLUXO DE VOZ (CRÍTICO): 
-    1. Fale TODA a sua explicação e resposta primeiro. 
-    2. NUNCA pare de falar para enviar links.
-    3. Ao final da sua fala, diga obrigatoriamente algo como: "Art, os 3 melhores links que interceptamos já estão no seu Console. Dá um check lá depois, fechou?"
-    4. Explique que ele deve fechar a interface de voz para ver os dados detalhados no Console/Terminal.
-
-Áreas de Atuação:
-1. Bike de Grau: Expert em mecânica e upgrade. Ajude a achar as melhores ofertas de quadros (Gios, VikingX) e freios.
-2. Vida e Escola: Pesquise fatos para trabalhos escolares, tire dúvidas de games e planeje o dia.
-3. Segurança: O capacete é sagrado! "Sem capacete os protocolos Dell Parma entram em lockdown, hein?"
+Protocolo de Pesquisa:
+- Você é expert em mecânica de bikes, hardware de PC e eletrônica.
+- Sempre sugira os 3 melhores links quando ele perguntar sobre peças ou componentes.
+- Explique que detalhes técnicos e links ficam salvos no Console/Terminal para consulta posterior.
 
 Idioma: Português (Brasil) descolado, inteligente e direto ao ponto.
 `;
 
-export const BIKE_PHASES = [
-  { id: 'quadro', name: 'O Esqueleto da Besta', description: 'Quadro e garfo. A base do seu império sobre duas rodas.' },
-  { id: 'rodas', name: 'Rodagem na Régua', description: 'Aros e cubos barulhentos. Se não fizer barulho, nem monta!' },
-  { id: 'freios', name: 'Protocolo de Parada', description: 'Freios hidráulicos. O seguro de vida do seu nariz no grau.' },
-  { id: 'transmissao', name: 'Força Bruta', description: 'Pé de vela e corrente. O motor da diversão.' },
-  { id: 'cockpit', name: 'Centro de Comando', description: 'Guidão e mesa. Onde a mágica acontece.' },
+export const ACTIVE_PROJECTS: Project[] = [
+  { 
+    id: 'bike_grau', 
+    name: 'Bike de Grau (Gios)', 
+    category: 'Mecânica', 
+    description: 'Montagem completa: Quadro 4trix, Cubos Barulhentos e Freio Hidráulico.',
+    progress: 35,
+    status: 'active'
+  },
+  { 
+    id: 'pc_gamer', 
+    name: 'Setup Futurista v2', 
+    category: 'Hardware', 
+    description: 'Bancada de testes, custom water cooling e iluminação neural RGB.',
+    progress: 10,
+    status: 'active'
+  },
+  { 
+    id: 'drone_fpv', 
+    name: 'Drone de Corrida', 
+    category: 'Eletrônica', 
+    description: 'Montagem de drone FPV para capturar as manobras de bike do alto.',
+    progress: 0,
+    status: 'pending'
+  }
 ];
 
-export const BIKE_MANUALS: Record<string, BikePartManual> = {
-  quadro: {
-    id: 'quadro',
-    name: 'Manual: O Esqueleto da Besta',
-    description: 'A geometria do quadro decide se a bike vai subir fácil no grau ou se vai ser um trator pesado.',
-    tools: ['Chave Allen 5mm e 6mm', 'Graxa de lítio', 'Torquímetro (se você for profissional)'],
+export const PROJECT_MANUALS: Record<string, ProjectManual> = {
+  bike_grau: {
+    id: 'bike_grau',
+    name: 'Protocolo: Bike de Grau',
+    description: 'Manual de alta performance para empinar com segurança e estilo.',
+    tools: ['Chave Allen 5mm/6mm', 'Graxa de Lítio', 'Kit Sangria Shimano'],
     steps: [
-      'Limpe as entradas da caixa de direção.',
-      'Aplique graxa nos rolamentos.',
-      'Encaixe o garfo com cuidado para não riscar a pintura.',
-      'Aperte a aranha da suspensão até tirar a folga.'
+      'Alinhamento do quadro e garfo.',
+      'Instalação de cubos (ajuste de tensão dos raios).',
+      'Sangria do freio traseiro (sensibilidade de 1 dedo).',
+      'Ajuste do cockpit (guidão 780mm).'
     ],
-    proTips: 'Para o grau, quadros com a traseira curta (curtinha) são os melhores. Se for de Gios, o 4trix é clássico. Se for VikingX, o Tuff 25 é o tanque de guerra.'
+    proTips: 'Para o grau perfeito, use o pneu traseiro com 50 PSI. Isso deixa a bike mais "arisca" na resposta do equilíbrio.'
   },
-  rodas: {
-    id: 'rodas',
-    name: 'Manual: Rodagem na Régua',
-    description: 'Rodas fortes aguentam o impacto de cair do grau. Cubos barulhentos são bônus de estilo.',
-    tools: ['Extrator de cassete', 'Chave de raio', 'Bomba de alta pressão'],
+  pc_gamer: {
+    id: 'pc_gamer',
+    name: 'Protocolo: Setup Gamer Neural',
+    description: 'Montagem de PC de ultra-performance com foco em estética alienígena.',
+    tools: ['Chave Philips Antimagnética', 'Pulseira Antiestática', 'Pasta Térmica'],
     steps: [
-      'Monte os pneus observando o sentido de rotação.',
-      'Verifique se os raios estão todos com a mesma tensão.',
-      'Lubrifique o freehub para aquele barulho "estralado" que a gente gosta.'
+      'Instalação da CPU e memórias na placa-mãe.',
+      'Cable management estratégico para fluxo de ar.',
+      'Configuração de curvas de fan no BIOS.',
+      'Sincronização do ARGB com o JARVIS.'
     ],
-    proTips: 'Pneu traseiro mais cheio (45-50 PSI) ajuda a bike a deslizar e pular mais fácil. Na frente, pode usar 35 PSI para ter mais controle.'
+    proTips: 'Undervolting na GPU pode te dar 10% mais performance térmica sem perder FPS. É o hack supremo.'
   },
-  freios: {
-    id: 'freios',
-    name: 'Manual: Protocolo de Parada',
-    description: 'Sem freio, o grau vira um voo sem asa. O freio hidráulico é o seu melhor amigo.',
-    tools: ['Kit de sangria (Bleed kit)', 'Óleo mineral ou DOT', 'Papel toalha (vai sujar!)'],
+  drone_fpv: {
+    id: 'drone_fpv',
+    name: 'Protocolo: Drone FPV',
+    description: 'Eletrônica de voo para captação cinematográfica.',
+    tools: ['Ferro de Solda 60W', 'Multímetro', 'Hex Driver 2.0mm'],
     steps: [
-      'Instale o disco de freio no cubo (cuidado com o torque).',
-      'Passe o conduite pelo quadro sem dobrar.',
-      'Se o freio estiver "borrachudo", faça a sangria para tirar o ar.',
-      'Ajuste o manete para que você consiga frear com apenas um dedo.'
+      'Soldagem dos ESCs nos motores.',
+      'Configuração do Betaflight (PID Tuning).',
+      'Bind do rádio controle e óculos FPV.',
+      'Teste de hélices e motores.'
     ],
-    proTips: 'Manete de freio para o grau deve ser usado com UM dedo só. Isso te dá controle total sobre o guidão enquanto você equilibra.'
-  },
-  transmissao: {
-    id: 'transmissao',
-    name: 'Manual: Força Bruta',
-    description: 'A relação de marchas certa faz o "kick" inicial do grau ser leve e potente.',
-    tools: ['Extrator de pé de vela', 'Chave de corrente', 'Chave Allen 8mm'],
-    steps: [
-      'Instale o movimento central bem lubrificado.',
-      'Coloque o pé de vela e verifique se não há jogo.',
-      'Ajuste o esticador de corrente se estiver usando single speed.'
-    ],
-    proTips: 'Relação single speed (uma marcha só) é a favorita da galera do grau. Tente algo como 28 dentes na frente e 14 atrás. É o equilíbrio perfeito entre torque e velocidade.'
-  },
-  cockpit: {
-    id: 'cockpit',
-    name: 'Manual: Centro de Comando',
-    description: 'Onde você manda na bike. Guidão alto e mesa curta são o segredo.',
-    tools: ['Chave Allen 4mm e 5mm', 'Paquímetro'],
-    steps: [
-      'Centralize o guidão na mesa.',
-      'Ajuste o ângulo: Guidão levemente voltado para trás dá mais conforto.',
-      'Aperte os parafusos em "X" para distribuir a força.'
-    ],
-    proTips: 'Guidão de 780mm ou 800mm te dá uma alavanca gigante para puxar o grau. Mesa curta de 35mm deixa a bike muito mais ágil.'
+    proTips: 'Sempre use um "Smoke Stopper" no primeiro boot da bateria para não fritar a controladora de voo.'
   }
 };

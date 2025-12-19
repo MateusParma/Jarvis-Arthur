@@ -1,57 +1,81 @@
 
 import React from 'react';
-import { BIKE_PHASES } from '../constants';
+import { ACTIVE_PROJECTS } from '../constants';
 
 interface DashboardProps {
-  onSelectPart: (partId: string) => void;
+  onSelectProject: (projectId: string) => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ onSelectPart }) => {
+const Dashboard: React.FC<DashboardProps> = ({ onSelectProject }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20 md:pb-0">
-      {BIKE_PHASES.map((phase) => (
+      {/* Lista de Projetos Ativos */}
+      {ACTIVE_PROJECTS.map((project) => (
         <div 
-          key={phase.id} 
-          onClick={() => onSelectPart(phase.id)}
-          className="glass-panel p-6 rounded-3xl group hover:border-sky-400/50 transition-all cursor-pointer relative overflow-hidden"
+          key={project.id} 
+          onClick={() => onSelectProject(project.id)}
+          className="glass-panel p-6 rounded-[2.5rem] group hover:border-sky-400/50 transition-all cursor-pointer relative overflow-hidden flex flex-col h-64 border-white/5"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 blur-3xl rounded-full group-hover:bg-sky-500/10 transition-all"></div>
+          <div className={`absolute top-0 right-0 w-32 h-32 blur-3xl rounded-full transition-all opacity-20 ${
+            project.status === 'active' ? 'bg-cyan-500' : 'bg-slate-500'
+          }`}></div>
           
           <div className="flex justify-between items-start mb-4 relative z-10">
-            <div className="p-3 bg-sky-500/10 rounded-2xl group-hover:bg-sky-500/20 transition-colors">
-              <svg className="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            <div className={`p-3 rounded-2xl transition-colors ${
+              project.status === 'active' ? 'bg-cyan-500/10 text-cyan-400' : 'bg-slate-500/10 text-slate-400'
+            }`}>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <div className="text-[9px] font-orbitron text-sky-500/60 uppercase tracking-widest border border-sky-500/20 px-2 py-1 rounded">MANUAL DISPONÍVEL</div>
+            <div className="text-[9px] font-orbitron text-white/20 tracking-widest uppercase border border-white/5 px-2 py-1 rounded">
+              {project.category}
+            </div>
           </div>
           
-          <h3 className="font-orbitron text-lg text-sky-100 mb-2 group-hover:text-sky-400 transition-colors">{phase.name}</h3>
-          <p className="text-sm text-slate-400 leading-relaxed mb-6 line-clamp-2">{phase.description}</p>
+          <h3 className="font-orbitron text-lg text-white mb-2 group-hover:text-cyan-400 transition-colors uppercase tracking-tight">{project.name}</h3>
+          <p className="text-xs text-white/40 leading-relaxed mb-auto line-clamp-2">{project.description}</p>
           
-          <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-             <div className="bg-sky-500 h-full w-[10%] group-hover:w-[100%] transition-all duration-1000"></div>
-          </div>
-          <div className="flex justify-between mt-3 text-[10px] font-orbitron text-sky-400/80">
-            <span className="flex items-center gap-1">
-              <div className="w-1.5 h-1.5 bg-sky-500 rounded-full animate-pulse"></div>
-              ABRIR PROJETO
-            </span>
-            <span>CLIQUE PARA DETALHES</span>
+          <div className="mt-6 space-y-2">
+            <div className="flex justify-between text-[9px] font-orbitron text-white/30 uppercase tracking-widest">
+              <span>Status Neural</span>
+              <span>{project.progress}%</span>
+            </div>
+            <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+               <div 
+                 className="bg-cyan-500 h-full transition-all duration-1000 shadow-[0_0_10px_rgba(34,211,238,0.5)]" 
+                 style={{ width: `${project.progress}%` }}
+               ></div>
+            </div>
           </div>
         </div>
       ))}
 
-      {/* Safety Alert */}
-      <div className="col-span-full bg-red-500/10 border border-red-500/30 p-6 rounded-3xl flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="bg-red-500 p-3 rounded-2xl shadow-[0_0_20px_rgba(239,68,68,0.4)]">
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      {/* Card: Novo Projeto */}
+      <div 
+        className="glass-panel p-6 rounded-[2.5rem] border-dashed border-white/10 hover:border-cyan-400/30 transition-all cursor-pointer group flex flex-col items-center justify-center text-center space-y-4 min-h-[16rem]"
+      >
+        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyan-500/10 transition-colors">
+          <svg className="w-8 h-8 text-white/20 group-hover:text-cyan-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
         </div>
         <div>
-          <h4 className="font-orbitron text-red-400 text-sm font-bold">ALERTA DE SEGURANÇA: PROTOCOLO WHEELING</h4>
-          <p className="text-slate-400 text-xs">Arthur, o sistema detectou manobras pendentes. O uso de capacete e protetores não é opcional, é inteligência pura. Não quebre o Art!</p>
+          <h4 className="font-orbitron text-xs text-white/40 uppercase tracking-[0.3em] group-hover:text-cyan-400 transition-colors">Novo Protocolo</h4>
+          <p className="text-[10px] text-white/10 mt-1 uppercase">Clique para iniciar nova montagem</p>
+        </div>
+      </div>
+
+      {/* Alerta de Seguranca Global */}
+      <div className="col-span-full bg-cyan-500/5 border border-cyan-400/10 p-6 rounded-[2.5rem] flex items-center gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 backdrop-blur-3xl">
+        <div className="w-12 h-12 bg-cyan-500 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.3)] animate-pulse">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div className="flex-1">
+          <h4 className="font-orbitron text-cyan-400 text-[10px] font-bold tracking-[0.4em] uppercase mb-1">Central de Inteligência Arthur Parma</h4>
+          <p className="text-white/40 text-xs">Aguardando seleção de blueprint para carregar esquemas técnicos e manuais de montagem.</p>
         </div>
       </div>
     </div>

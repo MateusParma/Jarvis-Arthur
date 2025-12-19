@@ -3,33 +3,20 @@ import { GoogleGenAI, Modality } from "@google/genai";
 
 let sharedAudioCtx: AudioContext | null = null;
 
-const getSharedAudioContext = (): AudioContext => {
+const getSharedAudioContext = () => {
   if (!sharedAudioCtx) {
     const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
     sharedAudioCtx = new AudioContextClass({ sampleRate: 24000 });
   }
-  // Forçamos o retorno como não nulo pois ele é inicializado acima
-  return sharedAudioCtx!;
+  return sharedAudioCtx;
 };
 
 export const playJarvisWelcome = async () => {
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
-    
-    // Lógica de primeira visita vs recorrente
-    const hasVisited = localStorage.getItem('jarvis_visited');
-    let welcomeText = '';
-    
-    if (!hasVisited) {
-      welcomeText = 'Iniciando sistema. Protocolos de oficina ativos. Bem-vindo, Arthur.';
-      localStorage.setItem('jarvis_visited', 'true');
-    } else {
-      welcomeText = 'Sistemas prontos. Protocolos de oficina ativos. Bem-vindo de volta, Arthur.';
-    }
-
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: welcomeText }] }],
+      contents: [{ parts: [{ text: 'Iniciando sistema. Protocolos de oficina ativos. Bem-vindo de volta, Arthur.' }] }],
       config: {
         responseModalities: [Modality.AUDIO],
         speechConfig: {

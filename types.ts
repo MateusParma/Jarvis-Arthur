@@ -15,13 +15,22 @@ export interface TerminalEntry {
   links?: { title: string; uri: string }[];
 }
 
-export interface BikePartManual {
+export interface ProjectManual {
   id: string;
   name: string;
   description: string;
   tools: string[];
   steps: string[];
   proTips: string;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  progress: number;
+  status: 'active' | 'pending' | 'completed';
 }
 
 export enum AppMode {

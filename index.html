@@ -3,76 +3,78 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>J.A.R.V.I.S Dell Parma</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS - Arthur Parma Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            color-scheme: dark;
-        }
         body {
             background-color: #020617;
             color: #f8fafc;
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 0;
-            /* Permite rolagem natural */
-            overflow-x: hidden;
-            overflow-y: auto;
-            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
         }
         .font-orbitron {
             font-family: 'Orbitron', sans-serif;
         }
         .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(56, 189, 248, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
         .jarvis-glow {
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.35);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
         }
         .shadow-glow {
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
         
-        /* Custom Scrollbar sleek */
-        ::-webkit-scrollbar {
-          width: 5px;
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
         }
-        ::-webkit-scrollbar-track {
-          background: transparent;
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(2, 6, 23, 0.5);
         }
-        ::-webkit-scrollbar-thumb {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
           background: rgba(56, 189, 248, 0.2);
           border-radius: 10px;
         }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(56, 189, 248, 0.4);
+        }
+
+        /* Animação Orgânica do Núcleo */
+        @keyframes morph {
+          0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+          50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+          100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+
+        .blob {
+          animation: morph 8s ease-in-out infinite;
+          transition: all 0.3s ease-out;
+        }
+
+        .blob-1 { background: rgba(56, 189, 248, 0.15); filter: blur(2px); }
+        .blob-2 { background: rgba(56, 189, 248, 0.1); filter: blur(5px); animation-duration: 10s; animation-direction: reverse; }
+        .blob-3 { background: rgba(56, 189, 248, 0.05); filter: blur(10px); animation-duration: 12s; }
 
         .scanline {
             width: 100%;
             height: 100px;
             z-index: 10;
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(56, 189, 248, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
-            pointer-events: none;
-            position: fixed;
-            top: -100px;
-            left: 0;
-            animation: scanline 8s linear infinite;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(56, 189, 248, 0.1) 50%, rgba(0, 0, 0, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 6s linear infinite;
         }
         @keyframes scanline {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(calc(100vh + 100px)); }
-        }
-
-        /* Animação Mecha */
-        @keyframes mecha-pulse {
-            0%, 100% { filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.5)); }
-            50% { filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.8)); }
-        }
-        .mecha-icon {
-            animation: mecha-pulse 3s ease-in-out infinite;
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
         }
     </style>
 <script type="importmap">
