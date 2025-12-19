@@ -31,7 +31,6 @@ const LiveAssistant: React.FC<LiveAssistantProps> = ({ onClose, onNewData }) => 
   const sessionRef = useRef<any>(null);
   const animationFrameRef = useRef<number>(null);
   
-  // Ref to collect chunks until turn complete
   const pendingLinksRef = useRef<SearchResult[]>([]);
 
   const updateVolume = useCallback(() => {
@@ -83,7 +82,6 @@ const LiveAssistant: React.FC<LiveAssistantProps> = ({ onClose, onNewData }) => 
               setTranscription(prev => prev + message.serverContent!.outputTranscription!.text);
             }
 
-            // Collect grounding metadata chunks
             if (message.serverContent?.groundingMetadata?.groundingChunks) {
               const chunks = message.serverContent.groundingMetadata.groundingChunks;
               const links: SearchResult[] = chunks
@@ -95,10 +93,8 @@ const LiveAssistant: React.FC<LiveAssistantProps> = ({ onClose, onNewData }) => 
               }
             }
 
-            // When turn completes, sync to terminal
             if (message.serverContent?.turnComplete) {
               if (pendingLinksRef.current.length > 0) {
-                // Keep only unique links, top 3 if possible
                 const uniqueLinks = Array.from(new Set(pendingLinksRef.current.map(l => l.uri)))
                   .map(uri => pendingLinksRef.current.find(l => l.uri === uri)!)
                   .slice(0, 3);
@@ -114,7 +110,9 @@ const LiveAssistant: React.FC<LiveAssistantProps> = ({ onClose, onNewData }) => 
               }
             }
 
-            const audioData = message.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
+            const modelTurn = message.serverContent?.modelTurn;
+            const audioData = modelTurn?.parts?.[0]?.inlineData?.data;
+            
             if (audioData && outputAudioContextRef.current) {
               const ctx = outputAudioContextRef.current;
               nextStartTimeRef.current = Math.max(nextStartTimeRef.current, ctx.currentTime);
