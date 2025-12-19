@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { playBootSfx, playJarvisWelcome } from '../services/audioService';
 
 interface BootSequenceProps {
@@ -22,17 +22,24 @@ const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
   const [logs, setLogs] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
 
-  const systemLogs = [
-    "RECONHECIMENTO BIOMÉTRICO: ARTHUR",
-    "AUTENTICANDO CREDENCIAIS J.A.R.V.I.S.",
-    "INTERFACE MECHA-ALIEN: ONLINE",
-    "CARREGANDO MÓDULOS DE OFICINA...",
-    "CONECTANDO À NEURAL LINK GOOGLE...",
-    "SINCRONIZANDO MAPAS DE MANOBRAS...",
-    "ESTABELECENDO CONEXÃO DE VOZ...",
-    "STATUS: TODOS OS SISTEMAS NOMINAIS.",
-    "BEM-VINDO AO FUTURO, ARTHUR."
-  ];
+  const systemLogs = useMemo(() => {
+    const hasVisited = localStorage.getItem('jarvis_visited');
+    const welcomeLog = hasVisited 
+      ? "BEM-VINDO DE VOLTA, ARTHUR." 
+      : "BEM-VINDO AO FUTURO, ARTHUR.";
+    
+    return [
+      "RECONHECIMENTO BIOMÉTRICO: ARTHUR",
+      "AUTENTICANDO CREDENCIAIS J.A.R.V.I.S.",
+      "INTERFACE MECHA-ALIEN: ONLINE",
+      "CARREGANDO MÓDULOS DE OFICINA...",
+      "CONECTANDO À NEURAL LINK GOOGLE...",
+      "SINCRONIZANDO MAPAS DE MANOBRAS...",
+      "ESTABELECENDO CONEXÃO DE VOZ...",
+      "STATUS: TODOS OS SISTEMAS NOMINAIS.",
+      welcomeLog
+    ];
+  }, []);
 
   const startBoot = async () => {
     playBootSfx();
