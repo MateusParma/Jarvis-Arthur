@@ -6,11 +6,13 @@ import LiveAssistant from './components/LiveAssistant';
 import Dashboard from './components/Dashboard';
 import Terminal from './components/Terminal';
 import ManualModal from './components/ManualModal';
+import BootSequence from './components/BootSequence';
 import { BIKE_MANUALS } from './constants';
 
 const App: React.FC = () => {
   const [mode, setMode] = useState<AppMode>(AppMode.DASHBOARD);
   const [showLive, setShowLive] = useState(false);
+  const [isBooted, setIsBooted] = useState(false); // Novo estado de boot
   const [terminalEntries, setTerminalEntries] = useState<TerminalEntry[]>([]);
   const [activeManual, setActiveManual] = useState<BikePartManual | null>(null);
 
@@ -30,8 +32,12 @@ const App: React.FC = () => {
     }
   };
 
+  if (!isBooted) {
+    return <BootSequence onComplete={() => setIsBooted(true)} />;
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-sky-500/30 overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 selection:bg-sky-500/30 overflow-hidden animate-in fade-in duration-1000">
       {/* Background decoration */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sky-600/5 blur-[150px] rounded-full"></div>
