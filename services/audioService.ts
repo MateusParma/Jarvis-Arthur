@@ -3,12 +3,13 @@ import { GoogleGenAI, Modality } from "@google/genai";
 
 let sharedAudioCtx: AudioContext | null = null;
 
-const getSharedAudioContext = () => {
+const getSharedAudioContext = (): AudioContext => {
   if (!sharedAudioCtx) {
     const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
     sharedAudioCtx = new AudioContextClass({ sampleRate: 24000 });
   }
-  return sharedAudioCtx;
+  // Forçamos o retorno como não nulo pois ele é inicializado acima
+  return sharedAudioCtx!;
 };
 
 export const playJarvisWelcome = async () => {
